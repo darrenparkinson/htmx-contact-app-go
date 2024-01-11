@@ -1,0 +1,39 @@
+{{ define "new.html" }}
+{{ template "header.html" .}}
+
+<form action="/contacts/new" method="post">
+    <fieldset>
+        <legend>Contact Values</legend>
+        <div class="table rows">
+            <p>
+                <label for="email">Email</label>
+                <input name="email" id="email" type="text" placeholder="Email" value="{{ .contact.Email }}">
+                <span class="error">{{ .errors.Email }}</span>
+            </p>
+            <p>
+                <label for="first_name">First Name</label>
+                <input name="first_name" id="first_name" type="text" placeholder="First Name" value="{{ .contact.First }}">
+                <span class="error">{{ .errors.First }}</span>
+            </p>
+            <p>
+                <label for="last_name">Last Name</label>
+                <input name="last_name" id="last_name" type="text" placeholder="Last Name" value="{{ .contact.Last }}">
+                <span class="error">{{ .errors.Last }}</span>
+            </p>
+            <p>
+                <label for="phone">Phone</label>
+                <input name="phone" id="phone" type="text" placeholder="Phone" value="{{ .contact.Phone }}">
+                <span class="error">{{ .errors.Phone }}</span>
+            </p>
+        </div>
+        <button>Save</button>
+    </fieldset>
+</form>
+
+<p>
+    <a href="/contacts">Back</a>
+</p>
+
+
+{{ template "footer.html" .}}
+{{ end }}

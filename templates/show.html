@@ -1,0 +1,18 @@
+{{ define "show.html" }}
+{{ template "header.html" .}}
+
+<h1>{{ .contact.First }} {{ .contact.Last }}</h1>
+
+<div>
+    <div>Phone: {{ .contact.Phone }}</div>
+    <div>Email: {{ .contact.Email }}</div>
+</div>
+
+<p>
+    <a href="/contacts/{{ .contact.ID }}/edit">Edit</a>
+    <a href="/contacts">Back</a>
+</p>
+
+
+{{ template "footer.html" .}}
+{{ end }}
