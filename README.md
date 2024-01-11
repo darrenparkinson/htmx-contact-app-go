@@ -1,5 +1,7 @@
 # HTMX Contact App - Go Version
 
+[![Status](https://img.shields.io/badge/status-wip-yellow)](https://github.com/darrenparkinson/htmx-contact-app-go) ![GitHub tag (latest SemVer)](https://img.shields.io/github/v/tag/darrenparkinson/htmx-contact-app-go) ![GitHub](https://img.shields.io/github/license/darrenparkinson/htmx-contact-app-go?color=brightgreen) [![GoDoc](https://pkg.go.dev/badge/darrenparkinson/htmx-contact-app-go)](https://pkg.go.dev/github.com/darrenparkinson/htmx-contact-app-go) [![Go Report Card](https://goreportcard.com/badge/github.com/darrenparkinson/htmx-contact-app-go)](https://goreportcard.com/report/github.com/darrenparkinson/htmx-contact-app-go)
+
 This is an attempt to convert the [python based contact app](https://github.com/bigskysoftware/contact-app) from the [Hypermedia Systems Book](https://hypermedia.systems/book/contents/) into a Go version using different frameworks.
 
 ![contacts app](./docs/contact-app.png)
