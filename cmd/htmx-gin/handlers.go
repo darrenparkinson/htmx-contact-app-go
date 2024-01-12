@@ -69,3 +69,23 @@ func (app *application) contactsEditGet(c *gin.Context) {
 	contact, _ := app.contactsUseCase.Find(id)
 	c.HTML(http.StatusOK, "edit.html", gin.H{"contact": contact, "messages": flashes(c)})
 }
+
+func (app *application) contactsEditPost(c *gin.Context) {
+	id, _ := strconv.Atoi(c.Param("id"))
+	var f newContactForm
+	c.Bind(&f)
+	contact := domain.Contact{
+		ID:    id,
+		First: f.FirstName,
+		Last:  f.LastName,
+		Phone: f.Phone,
+		Email: f.Email,
+	}
+	err := app.contactsUseCase.Update(contact)
+	if err != nil {
+		c.HTML(http.StatusOK, "edit.html", gin.H{"contact": contact})
+		return
+	}
+	flashMessage(c, "Updated Contact!")
+	c.Redirect(http.StatusFound, fmt.Sprintf("/contacts/%d", id))
+}

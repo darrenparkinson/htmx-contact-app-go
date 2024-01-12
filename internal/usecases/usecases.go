@@ -30,8 +30,8 @@ func (c *contactUseCase) List() ([]domain.Contact, error) {
 	return c.contactRepo.List()
 }
 
-func (c *contactUseCase) Update(first, last, phone, email string) error {
-	return c.contactRepo.Update(first, last, phone, email)
+func (c *contactUseCase) Update(contact domain.Contact) error {
+	return c.contactRepo.Update(contact)
 }
 
 func (c *contactUseCase) Delete(id int) error {

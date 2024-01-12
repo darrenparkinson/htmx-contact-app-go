@@ -44,7 +44,6 @@ func (r *contactJSONRepository) Create(contact domain.Contact) error {
 		}
 		ids = append(ids, c.ID)
 	}
-	fmt.Println("IDs", ids)
 	contactsMap := r.contactCache.RetrieveMap()
 	maxid := 0
 	if len(contacts) != 0 {
@@ -65,7 +64,25 @@ func (r *contactJSONRepository) List() ([]domain.Contact, error) {
 	return r.contactCache.Retrieve(), nil
 }
 
-func (r *contactJSONRepository) Update(first, last, phone, email string) error {
+func (r *contactJSONRepository) Update(contact domain.Contact) error {
+	if contact.Email == "" {
+		return domain.ErrMissingEmail
+	}
+	contacts := r.contactCache.Retrieve()
+	var contactPos int
+	for i, c := range contacts {
+		if strings.EqualFold(c.Email, contact.Email) && c.ID != contact.ID {
+			return domain.ErrExistingContact
+		}
+		if c.ID == contact.ID {
+			contactPos = i
+		}
+	}
+	contacts[contactPos] = contact
+	contactsMap := r.contactCache.RetrieveMap()
+	contactsMap[contact.ID] = contact
+	r.contactCache.Update(contacts, contactsMap)
+	helpers.SaveJSON("contacts.json", contacts)
 	return nil
 }
 
