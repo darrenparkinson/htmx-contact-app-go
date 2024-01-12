@@ -16,6 +16,13 @@ type newContactForm struct {
 	Email     string `form:"email"`
 }
 
+type errorList struct {
+	First string
+	Last  string
+	Phone string
+	Email string
+}
+
 func (app *application) contacts(c *gin.Context) {
 	var contacts []domain.Contact
 	search := c.Query("q")
@@ -51,7 +58,8 @@ func (app *application) contactsNew(c *gin.Context) {
 			Phone: f.Phone,
 			Email: f.Email,
 		}
-		c.HTML(http.StatusOK, "new.html", gin.H{"contact": contact})
+		errs := errorList{Email: err.Error()} // currently only email errors given, otherwise we could check errors.Is?
+		c.HTML(http.StatusOK, "new.html", gin.H{"contact": contact, "errors": errs})
 		return
 	}
 	flashMessage(c, "Created New Contact!")
@@ -83,7 +91,8 @@ func (app *application) contactsEditPost(c *gin.Context) {
 	}
 	err := app.contactsUseCase.Update(contact)
 	if err != nil {
-		c.HTML(http.StatusOK, "edit.html", gin.H{"contact": contact})
+		errs := errorList{Email: err.Error()} // currently only email errors given, otherwise we could check errors.Is?
+		c.HTML(http.StatusOK, "edit.html", gin.H{"contact": contact, "errors": errs})
 		return
 	}
 	flashMessage(c, "Updated Contact!")
