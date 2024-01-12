@@ -63,3 +63,9 @@ func (app *application) contactsView(c *gin.Context) {
 	contact, _ := app.contactsUseCase.Find(id)
 	c.HTML(http.StatusOK, "show.html", gin.H{"contact": contact, "messages": flashes(c)})
 }
+
+func (app *application) contactsEditGet(c *gin.Context) {
+	id, _ := strconv.Atoi(c.Param("id"))
+	contact, _ := app.contactsUseCase.Find(id)
+	c.HTML(http.StatusOK, "edit.html", gin.H{"contact": contact, "messages": flashes(c)})
+}

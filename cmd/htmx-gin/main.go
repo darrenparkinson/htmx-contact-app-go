@@ -40,6 +40,7 @@ func main() {
 	contactsGroup.GET("/new", app.contactsNewGet)
 	contactsGroup.POST("/new", app.contactsNew)
 	contactsGroup.GET("/:id", app.contactsView)
+	contactsGroup.GET("/:id/edit", app.contactsEditGet)
 
 	log.Println("listening...")
 	router.Run(fmt.Sprintf(":%d", 8080))
