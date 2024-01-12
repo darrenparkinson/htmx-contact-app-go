@@ -83,6 +83,19 @@ func (r *contactJSONRepository) Update(contact domain.Contact) error {
 }
 
 func (r *contactJSONRepository) Delete(id int) error {
+	contactsMap := r.contactCache.RetrieveMap()
+	delete(contactsMap, id)
+	contacts := r.contactCache.Retrieve()
+	var contactPos int
+	for i, c := range contacts {
+		if c.ID == id {
+			contactPos = i
+			break
+		}
+	}
+	newContacts := append(contacts[:contactPos], contacts[contactPos+1:]...)
+	r.contactCache.Update(newContacts, contactsMap)
+	helpers.SaveJSON("contacts.json", newContacts)
 	return nil
 }
 
