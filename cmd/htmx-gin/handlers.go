@@ -111,3 +111,14 @@ func (app *application) contactsEmailGet(c *gin.Context) {
 	}
 	c.String(http.StatusOK, "")
 }
+
+func (app *application) contactsDelete(c *gin.Context) {
+	id, _ := strconv.Atoi(c.Param("id"))
+	app.contactsUseCase.Delete(id)
+	if c.GetHeader("HX-Trigger") == "delete-btn" {
+		flashMessage(c, "Deleted Contact!")
+		c.Redirect(http.StatusSeeOther, "/contacts")
+		return
+	}
+	c.String(http.StatusOK, "")
+}
