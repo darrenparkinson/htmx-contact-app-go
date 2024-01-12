@@ -10,6 +10,7 @@ type ContactUseCase interface {
 	Search(query string) ([]domain.Contact, error)
 	Find(id int) (*domain.Contact, error)
 	Count() int
+	Validate(domain.Contact) error
 }
 
 type ContactRepository interface {
@@ -20,4 +21,5 @@ type ContactRepository interface {
 	Search(query string) ([]domain.Contact, error)
 	Find(id int) (*domain.Contact, error)
 	Count() int
+	Validate(domain.Contact) error
 }

@@ -33,15 +33,13 @@ func NewContactJSONRepository() ports.ContactRepository {
 }
 
 func (r *contactJSONRepository) Create(contact domain.Contact) error {
-	if contact.Email == "" {
-		return domain.ErrMissingEmail
+	err := r.Validate(contact)
+	if err != nil {
+		return err
 	}
 	var ids []int
 	contacts := r.contactCache.Retrieve()
 	for _, c := range contacts {
-		if strings.EqualFold(c.Email, contact.Email) {
-			return domain.ErrExistingContact
-		}
 		ids = append(ids, c.ID)
 	}
 	contactsMap := r.contactCache.RetrieveMap()
@@ -65,15 +63,13 @@ func (r *contactJSONRepository) List() ([]domain.Contact, error) {
 }
 
 func (r *contactJSONRepository) Update(contact domain.Contact) error {
-	if contact.Email == "" {
-		return domain.ErrMissingEmail
+	err := r.Validate(contact)
+	if err != nil {
+		return err
 	}
 	contacts := r.contactCache.Retrieve()
 	var contactPos int
 	for i, c := range contacts {
-		if strings.EqualFold(c.Email, contact.Email) && c.ID != contact.ID {
-			return domain.ErrExistingContact
-		}
 		if c.ID == contact.ID {
 			contactPos = i
 		}
@@ -112,4 +108,17 @@ func (r *contactJSONRepository) Find(id int) (*domain.Contact, error) {
 
 func (r *contactJSONRepository) Count() int {
 	return len(r.contactCache.Retrieve())
+}
+
+func (r *contactJSONRepository) Validate(contact domain.Contact) error {
+	if contact.Email == "" {
+		return domain.ErrMissingEmail
+	}
+	contacts := r.contactCache.Retrieve()
+	for _, c := range contacts {
+		if strings.EqualFold(c.Email, contact.Email) && c.ID != contact.ID {
+			return domain.ErrExistingContact
+		}
+	}
+	return nil
 }

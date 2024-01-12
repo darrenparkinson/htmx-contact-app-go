@@ -50,3 +50,7 @@ func (c *contactUseCase) Count() int {
 	time.Sleep(2 * time.Second)
 	return c.contactRepo.Count()
 }
+
+func (c *contactUseCase) Validate(contact domain.Contact) error {
+	return c.contactRepo.Validate(contact)
+}
