@@ -2,7 +2,9 @@ package main
 
 import (
 	"fmt"
+	"io"
 	"net/http"
+	"net/url"
 	"strconv"
 
 	"github.com/darrenparkinson/htmx-contact-app-go/internal/domain"
@@ -121,4 +123,19 @@ func (app *application) contactsDelete(c *gin.Context) {
 		return
 	}
 	c.String(http.StatusOK, "")
+}
+
+func (app *application) contactsDeleteAll(c *gin.Context) {
+	// as per the docs, the body doesn't get parsed for DELETE
+	// https://pkg.go.dev/net/http#Request.ParseForm
+	b, _ := io.ReadAll(c.Request.Body)
+	q, _ := url.ParseQuery(string(b))
+	contact_ids := q["selected_contact_ids"]
+	for _, cid := range contact_ids {
+		id, _ := strconv.Atoi(cid)
+		app.contactsUseCase.Delete(id)
+	}
+	flashMessage(c, "Deleted Contacts!")
+	contacts, _ := app.contactsUseCase.List()
+	c.HTML(http.StatusOK, "index.html", gin.H{"contacts": contacts, "messages": flashes(c)})
 }

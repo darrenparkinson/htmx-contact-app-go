@@ -44,6 +44,7 @@ func main() {
 	contactsGroup.POST("/:id/edit", app.contactsEditPost)
 	contactsGroup.GET("/:id/email", app.contactsEmailGet)
 	contactsGroup.DELETE("/:id", app.contactsDelete)
+	contactsGroup.DELETE("", app.contactsDeleteAll)
 
 	log.Println("listening...")
 	router.Run(fmt.Sprintf(":%d", 8080))
