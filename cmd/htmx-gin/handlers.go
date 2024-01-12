@@ -89,3 +89,16 @@ func (app *application) contactsEditPost(c *gin.Context) {
 	flashMessage(c, "Updated Contact!")
 	c.Redirect(http.StatusFound, fmt.Sprintf("/contacts/%d", id))
 }
+
+func (app *application) contactsEmailGet(c *gin.Context) {
+	id, _ := strconv.Atoi(c.Param("id"))
+	email := c.Query("email")
+	contact, _ := app.contactsUseCase.Find(id)
+	contact.Email = email
+	err := app.contactsUseCase.Validate(*contact)
+	if err != nil {
+		c.String(http.StatusOK, err.Error())
+		return
+	}
+	c.String(http.StatusOK, "")
+}
